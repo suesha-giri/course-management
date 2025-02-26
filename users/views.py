@@ -33,10 +33,10 @@ def admin_logout(request):
 
 def dashboard(request):
     if request.user.is_authenticated:
-        courses = Course.objects.all()
+        courses = Course.objects.select_related('category').all()
         categories = Category.objects.all()
         students = Student.objects.all()
-        enrollments = Enrollment.objects.all()
+        enrollments = Enrollment.objects.select_related('student', 'course').all()
         context = {'courses': courses, 'categories': categories, 'students': students, 'enrollments': enrollments}
         return render(request, 'dashboard.html', context=context)
     return redirect('login')

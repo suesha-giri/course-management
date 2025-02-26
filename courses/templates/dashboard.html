@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>Welcome to the Admin Dashboard</h2>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row">         
+        <!-- Main Content -->
+        <main class="col-md-10">
+
+        <!-- Dashboard Info -->
+        <section id="dashboard" class="content-section active-section">
+            <p>You can manage Courses, Categories, Students, and Enrollments.</p>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="categories-section">
+            <h3>Categories <a href="{% url 'category-create' %}" class="btn btn-primary btn-sm">Add New</a></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Parent Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.parent.name }}</td>
+                            <td>
+                                <a href="{% url 'category-update' category.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'category-delete' category.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="courses-section">
+            <h3>Courses <a href="{% url 'course-create' %}" class="btn btn-primary btn-sm">Add New</a></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Video</th>
+                        <th>Document</th>
+                        <th>MCQ</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                        <tr>
+                            <td>{{ course.title }}</td>
+                            <td>{{ course.description }}</</td>
+                            <td>{{ course.price }}</</td>
+                            <td>{{ course.category }}</</td>
+                            <td>
+                                {% if course.video %}
+                                    <video width="320" height="240" controls>
+                                        <source src="{{ course.video.url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% else %}
+                                    Not uploaded
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                {% if course.document %}
+                                    <a href="{{ course.document.url }}" target="_blank">Download Document</a>
+                                {% else %}
+                                    Not uploaded
+                                {% endif %}
+                            </td>
+                            <td>{{ course.mcq }}</</td>
+                            <td>
+                                <a href="{% url 'course-update' course.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'course-delete' course.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="students-section">
+            <h3>Students <a href="{% url 'student-create' %}" class="btn btn-primary btn-sm">Add New</a></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>
+                                <a href="{% url 'student-update' student.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'student-delete' student.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Enrollment Section -->
+        <section id="enrollments" class="enrollments-section">
+            <h3>Enrollment <a href="{% url 'enrollment-create' %}" class="btn btn-primary btn-sm">Add New</a></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Enrolled on</th>
+                        <th>Completed?</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enrollment in enrollments %}
+                        <tr>
+                            <td>{{ enrollment.student.name }}</td>
+                            <td>{{ enrollment.course.title }}</td>
+                            <td>{{ enrollment.enrolled_on }}</td>
+                            <td>{{ enrollment.is_completed }}</td>
+                            <td>
+                                <a href="{% url 'enrollment-update' enrollment.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'enrollment-delete' enrollment.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+{% endblock %}

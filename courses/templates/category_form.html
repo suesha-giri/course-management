@@ -1,0 +1,35 @@
+{% extends "dashboard.html" %}
+
+{% block header %}
+<h2>{{ form_action }} Category</h2>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">  <!-- Limits the form width -->
+            <form method="post" action=" {{form_url}} ">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field|title }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {{form.as_p}}
+
+                <button type="submit" class="btn btn-primary">{{form_action}} Category</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

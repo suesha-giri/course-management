@@ -1,7 +1,8 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
+
 from users.models import Student
 
-# Create your models here.
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -16,6 +17,21 @@ class Course(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='courses')
+
+    #contents
+    video = models.FileField(
+        null=True,
+        blank=True,
+        upload_to='videos/',
+        validators=[FileExtensionValidator(['mp4'])],
+    )
+    document = models.FileField(
+        null=True,
+        blank=True,
+        upload_to='documents/',
+        validators=[FileExtensionValidator(['pdf'])],
+    )
+    mcq = models.JSONField(default=list, null=True, blank=True)
 
     def __str__(self):
         return self.title
